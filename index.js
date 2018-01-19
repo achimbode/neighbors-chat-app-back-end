@@ -9,6 +9,7 @@ const cors = require('cors');
 
 const socketEvents = require('./socketEvents');
 const router = require('./router.js');
+const config = require('./config/config.js');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -22,11 +23,12 @@ app.use(async (req, res, next) => {;
   return await next();
 });
 
-const corsOptions = {origin: ['http://localhost:3000']};
+const corsOptions = {origin: config.cors};
 
 app.use(cors(corsOptions));
 
 app.use(router);
 
 socketEvents(io);
-server.listen(4000, () => console.log('server running'));
+
+server.listen(config.port, () => console.log('server running on port ' + config.port));
